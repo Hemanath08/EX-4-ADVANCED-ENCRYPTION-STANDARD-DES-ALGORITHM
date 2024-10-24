@@ -14,35 +14,60 @@
 #include <stdio.h>
 #include <string.h>
 
-// XOR encryption function
-void xor_encrypt_decrypt(char *input, char *key) {
-    int input_len = strlen(input);
-    int key_len = strlen(key);
+void encrypt(char *message, char *key, char *encryptedMessage, int messageLength) {
+    int keyLength = strlen(key);
 
-    for (int i = 0; i < input_len; i++) {
-        input[i] = input[i] ^ key[i % key_len]; // XOR encryption
+    for (int i = 0; i < messageLength; i++) {
+        encryptedMessage[i] = message[i] ^ key[i % keyLength];
     }
+    encryptedMessage[messageLength] = '\0';  
+}
+
+void decrypt(char *encryptedMessage, char *key, char *decryptedMessage, int messageLength) {
+    int keyLength = strlen(key);
+
+    for (int i = 0; i < messageLength; i++) {
+        decryptedMessage[i] = encryptedMessage[i] ^ key[i % keyLength];
+    }
+    decryptedMessage[messageLength] = '\0';  
 }
 
 int main() {
-    char url[] = "https://www.amazon.com/";
-    char key[] = "secretkey"; // Simple key for XOR encryption
+    char message[100];
+    char key[100];
+    
+    printf("\n      *****Simulation of DES encryption and decryption*****\n\n");
+    printf("Enter the message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = '\0';  
+    
+    printf("Enter the encryption key: ");
+    fgets(key, sizeof(key), stdin);
+    key[strcspn(key, "\n")] = '\0'; 
 
-    printf("Original URL: %s\n", url);
-
-    // Encrypt the URL
-    xor_encrypt_decrypt(url, key);
-    printf("Encrypted URL: %s\n", url);
-
-    // Decrypt the URL (since XOR is reversible using the same key)
-    xor_encrypt_decrypt(url, key);
-    printf("Decrypted URL: %s\n", url);
-
+    int messageLength = strlen(message);
+    
+    char encryptedMessage[100];
+    char decryptedMessage[100];
+    
+    encrypt(message, key, encryptedMessage, messageLength);
+    printf("Original Message: %s\n", message);
+    printf("Encrypted Message: ");
+    
+    for (int i = 0; i < messageLength; i++) {
+        printf("%02X ", (unsigned char)encryptedMessage[i]);
+    }
+    printf("\n");
+    
+    decrypt(encryptedMessage, key, decryptedMessage, messageLength);
+    printf("Decrypted Message: %s\n", decryptedMessage);
+    
     return 0;
 }
+
 ```
 ## OUTPUT:
-![output](https://github.com/user-attachments/assets/7e3d1d4f-6b4c-4b26-8402-105fd122a782)
+![image](https://github.com/user-attachments/assets/88d93c81-51dc-41b4-933b-ee0a8ba6c794)
 
 ## RESULT: 
 Thus to use Advanced Encryption Standard (AES) Algorithm for a practical application like URL Encryption is done successfully.
